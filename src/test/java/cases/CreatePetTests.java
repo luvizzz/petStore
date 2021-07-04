@@ -7,26 +7,30 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.Utils;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 
 public class CreatePetTests extends BaseTest {
     int petId;
 
     @BeforeEach
-    private void setup() {
-        this.petId = UUID.randomUUID().variant();
+    @Override
+    protected void setup() {
+        this.petId = Utils.randomId();
     }
 
     @AfterEach
-    private void tearDown() {
-        petSteps.deletePet(petId);
+    @Override
+    protected void tearDown() {
+        petSteps.deletePet((long) petId);
     }
 
     @Test
+    @org.junit.jupiter.api.Tag("smoke")
     void addPetWithOnlyRequiredData_expectSuccess() {
         //GIVEN
         Pet pet = new Pet.Builder()
@@ -42,12 +46,12 @@ public class CreatePetTests extends BaseTest {
     }
 
     @Test
+    @org.junit.jupiter.api.Tag("smoke")
     void addPetWithAllPossibleData_expectSuccess() {
         //GIVEN
-        Category myCategory = new Category(100, "myCategoryName");
         Pet pet = new Pet.Builder()
-                .withId(1000L)
-                .withCategory(myCategory)
+                .withId((long) petId)
+                .withCategory(new Category(100, "myCategoryName"))
                 .withName("someTestName")
                 .withPhotoUrls(List.of("some.url.com", "some.other.url.com"))
                 .withTags(List.of(new Tag(999, "myTagName")))
@@ -87,5 +91,14 @@ public class CreatePetTests extends BaseTest {
 
         //THEN
         petSteps.assertResponseCode(response.statusCode(), SC_BAD_REQUEST);
+    }
+
+    @Test
+    void addPetWithBadInput_expectMethodNotAllowed() {
+        //WHEN
+        Response response = petSteps.addPet("\"input\":\"someBadInput\"");
+
+        //THEN
+        petSteps.assertResponseCode(response.statusCode(), SC_METHOD_NOT_ALLOWED);
     }
 }

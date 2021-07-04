@@ -2,9 +2,14 @@ package steps;
 
 import domain.Pet;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
@@ -23,12 +28,69 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
-    public Response deletePet(int petId) {
+    public Response addPet(String body) {
         return super.given()
                 .when()
-                .basePath(BASE_PATH + petId)
+                .basePath(BASE_PATH)
                 .log().all()
-                .delete()
+                .body(body)
+                .post()
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response getPet(Long id) {
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .log().all()
+                .get(String.valueOf(id))
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response getPetWithoutId() {
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .log().all()
+                .get()
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response findPetByStatus() {
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .log().all()
+                .get("findByStatus")
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response findPetByStatus(String... statuses) {
+        RequestSpecification myRequest = super.given()
+                .when()
+                .basePath(BASE_PATH);
+        Arrays.stream(statuses).forEach(status -> myRequest.queryParam("status", status));
+        return myRequest.log().all()
+                .get("findByStatus")
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response deletePet(Long petId) {
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .log().all()
+                .delete(String.valueOf(petId))
                 .then()
                 .log().all()
                 .extract().response();
@@ -46,6 +108,20 @@ public class PetSteps extends BaseSteps {
             Optional.ofNullable(expected.getCategory()).ifPresent(value -> softly.assertThat(actual.getCategory()).isEqualTo(value));
             Optional.ofNullable(expected.getTags()).ifPresent(value -> softly.assertThat(actual.getTags()).isEqualTo(value));
             Optional.ofNullable(expected.getStatus()).ifPresent(value -> softly.assertThat(actual.getStatus()).isEqualTo(value));
+        });
+    }
+
+    public void assertResponseContainsList(Response response, List<Long> expectedListOfIds) {
+        assertResponseCode(response.statusCode(), SC_OK);
+        List<Map<String, Object>> actual = response.body().as(List.class);
+
+        List<Long> actualIds = actual.stream()
+                .map(entry -> ((Number) entry.get("id")).longValue())
+                .collect(Collectors.toList());
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(actual.size()).isEqualTo(expectedListOfIds.size());
+            softly.assertThat(actualIds).containsExactlyInAnyOrderElementsOf(expectedListOfIds);
         });
     }
 }
