@@ -11,6 +11,10 @@ public class Utils {
         return random.nextInt(9999999);
     }
 
+    public static String randomName() {
+        return "SomeName" + random.nextInt(9999999);
+    }
+
     public static String randomStatus() {
         return "SomeStatus" + random.nextInt(9999999);
     }

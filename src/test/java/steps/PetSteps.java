@@ -2,6 +2,7 @@ package steps;
 
 import domain.Pet;
 import domain.Tag;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.restassured.config.EncoderConfig.encoderConfig;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class PetSteps extends BaseSteps {
@@ -41,7 +43,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
-    public Response updatePet(Pet body) {
+    public Response updatePetByPut(Pet body) {
         return super.given()
                 .when()
                 .basePath(BASE_PATH)
@@ -53,7 +55,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
-    public Response updatePet(String body) {
+    public Response updatePetByPut(String body) {
         return super.given()
                 .when()
                 .basePath(BASE_PATH)
@@ -63,6 +65,35 @@ public class PetSteps extends BaseSteps {
                 .then()
                 .log().all()
                 .extract().response();
+    }
+
+    public Response updatePetByPost(Long petId, String name, String status) {
+        String body = createUpdatePostBody(name, status);
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .config(RestAssured.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                .log().all()
+                .body(body)
+                .post(String.valueOf(petId))
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    private String createUpdatePostBody(String name, String status) {
+        String body = "";
+        if (name != null && !name.equals("")) {
+            body = "name=" + name;
+        }
+        if (status != null && !status.equals("")) {
+            if (!body.equals("")) {
+                body += "&";
+            }
+            body += "status=" + status;
+        }
+        return body;
     }
 
     public Response getPet(Long id) {
@@ -126,7 +157,7 @@ public class PetSteps extends BaseSteps {
         RequestSpecification request = super.given()
                 .when()
                 .basePath(BASE_PATH);
-        if(apiKey != null) {
+        if (apiKey != null) {
             request.header("apiKey", apiKey);
         }
         return request
@@ -145,7 +176,7 @@ public class PetSteps extends BaseSteps {
         RequestSpecification request = super.given()
                 .when()
                 .basePath(BASE_PATH);
-        if(apiKey != null) {
+        if (apiKey != null) {
             request.header("apiKey", apiKey);
         }
         return request

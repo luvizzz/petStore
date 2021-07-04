@@ -29,7 +29,7 @@ public class UpdatePetByPutTests extends BaseTest {
                 .build();
 
         //WHEN
-        Response response = petSteps.updatePet(updatedPet);
+        Response response = petSteps.updatePetByPut(updatedPet);
 
         //THEN
         petSteps.assertResponseCode(response.statusCode(), SC_OK);
@@ -47,7 +47,7 @@ public class UpdatePetByPutTests extends BaseTest {
         String petBody = "{\"id\" : \"someBadlyFormedId\"}";
 
         //WHEN
-        Response response = petSteps.updatePet(petBody);
+        Response response = petSteps.updatePetByPut(petBody);
 
         //THEN
         petSteps.assertResponseCode(response.statusCode(), SC_BAD_REQUEST);
@@ -59,7 +59,7 @@ public class UpdatePetByPutTests extends BaseTest {
         petSteps.deletePet(NULL_API_KEY, pet.getId());
 
         //WHEN
-        Response response = petSteps.updatePet(pet);
+        Response response = petSteps.updatePetByPut(pet);
 
         //THEN
         petSteps.assertResponseCode(response.statusCode(), SC_NOT_FOUND);
@@ -71,7 +71,7 @@ public class UpdatePetByPutTests extends BaseTest {
         String petBody = String.format("{\"id\" : \"%s\", \"someBadProperty\":\"someBadValue\" }", pet.getId());
 
         //WHEN
-        Response response = petSteps.updatePet(petBody);
+        Response response = petSteps.updatePetByPut(petBody);
 
         //THEN
         petSteps.assertResponseCode(response.statusCode(), SC_METHOD_NOT_ALLOWED);
