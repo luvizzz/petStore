@@ -41,6 +41,30 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    public Response updatePet(Pet body) {
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .log().all()
+                .body(body)
+                .put()
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response updatePet(String body) {
+        return super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .log().all()
+                .body(body)
+                .put()
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
     public Response getPet(Long id) {
         return super.given()
                 .when()

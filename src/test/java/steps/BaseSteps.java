@@ -37,7 +37,7 @@ public abstract class BaseSteps {
     }
 
     public void waitAWhile(Long time) {
-        LOG.info("Waiting a bit...");
+        LOG.info(String.format("Waiting a bit (%d ms)...", time));
         try {
             Thread.sleep(time); //todo: consider moving time amount to a property file. Can be related to specific env. performance
         } catch (InterruptedException e) {

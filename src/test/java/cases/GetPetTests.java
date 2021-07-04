@@ -8,7 +8,6 @@ import static org.apache.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
 public class GetPetTests extends BaseTest {
-
     @Test
     @Tag(SMOKE_TAG)
     void getPetById_expectSuccess() {
