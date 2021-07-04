@@ -3,6 +3,7 @@ package steps;
 import domain.Pet;
 import domain.Tag;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
@@ -94,6 +95,30 @@ public class PetSteps extends BaseSteps {
             body += "status=" + status;
         }
         return body;
+    }
+
+    public Response uploadPetImage(Long petId, String metadata, String filePath, String fileType) {
+        RequestSpecification request =  super.given()
+                .when()
+                .basePath(BASE_PATH)
+                .header("Content-Type", "multipart/form-data")
+                .config(RestAssured.config().encoderConfig(encoderConfig().encodeContentTypeAs("multipart/form-data", ContentType.TEXT)))
+                .log().all();
+
+        if (metadata != null) {
+            request.multiPart("additionalMetadata", metadata);
+        }
+
+        if (filePath != null) {
+            request.multiPart("file", filePath, fileType);
+        }
+
+        return request
+                .accept("application/json")
+                .post(petId + "/uploadImage")
+                .then()
+                .log().all()
+                .extract().response();
     }
 
     public Response getPet(Long id) {
