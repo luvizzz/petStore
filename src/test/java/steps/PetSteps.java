@@ -1,6 +1,7 @@
 package steps;
 
 import domain.Pet;
+import domain.Tag;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
@@ -80,6 +81,18 @@ public class PetSteps extends BaseSteps {
         Arrays.stream(statuses).forEach(status -> myRequest.queryParam("status", status));
         return myRequest.log().all()
                 .get("findByStatus")
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response findPetByTags(List<Tag> tags) {
+        RequestSpecification myRequest = super.given()
+                .when()
+                .basePath(BASE_PATH);
+        tags.forEach(tag -> myRequest.queryParam("tags", tag.getName()));
+        return myRequest.log().all()
+                .get("findByTags")
                 .then()
                 .log().all()
                 .extract().response();

@@ -1,15 +1,22 @@
 package utils;
 
+import domain.Tag;
+
 import java.util.Random;
 
 public class Utils {
+    static Random random = new Random();
+
     public static int randomId() {
-        Random random = new Random();
         return random.nextInt(9999999);
     }
 
     public static String randomStatus() {
-        Random random = new Random();
         return "SomeStatus" + random.nextInt(9999999);
+    }
+
+    public static Tag randomTag() {
+        int tagId = random.nextInt(9999999);
+        return new Tag(tagId, "someRandomTag" + tagId);
     }
 }
