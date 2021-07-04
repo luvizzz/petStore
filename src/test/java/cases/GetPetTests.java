@@ -10,7 +10,7 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 public class GetPetTests extends BaseTest {
 
     @Test
-    @Tag("smoke")
+    @Tag(SMOKE_TAG)
     void getPetById_expectSuccess() {
         //WHEN
         Response response = petSteps.getPet(pet.getId());
@@ -31,7 +31,7 @@ public class GetPetTests extends BaseTest {
     @Test
     void getNonExistantPetById_expectNotFound() {
         //GIVEN
-        petSteps.deletePet(pet.getId());
+        petSteps.deletePet(NULL_API_KEY, pet.getId());
 
         //WHEN
         Response response = petSteps.getPet(pet.getId());

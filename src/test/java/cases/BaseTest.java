@@ -11,8 +11,10 @@ import java.util.List;
 
 public abstract class BaseTest {
     protected PetSteps petSteps = new PetSteps();
+    protected final String NULL_API_KEY = null;
+    protected final String SMOKE_TAG = "smoke";
 
-    Pet pet;
+    static Pet pet;
 
     @BeforeEach
     protected void setup() {
@@ -25,10 +27,12 @@ public abstract class BaseTest {
                 .withStatus(Utils.randomStatus())
                 .build();
         petSteps.addPet(pet);
+
+        petSteps.waitAWhile(1000L);
     }
 
     @AfterEach
     protected void tearDown() {
-        petSteps.deletePet(pet.getId());
+        petSteps.deletePet(NULL_API_KEY, pet.getId());
     }
 }

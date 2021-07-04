@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FindByTagsTests extends BaseTest {
     @Test
-    @org.junit.jupiter.api.Tag("smoke")
+    @org.junit.jupiter.api.Tag(SMOKE_TAG)
     void findPetByTags_expectSuccess() {
         //WHEN
         Response response = petSteps.findPetByTags(pet.getTags());

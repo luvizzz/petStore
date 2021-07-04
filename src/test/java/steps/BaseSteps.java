@@ -32,10 +32,14 @@ public abstract class BaseSteps {
                 .isEqualTo(expected);
     }
 
-    private void waitAWhile() {
+    public void waitAWhile() {
+        waitAWhile(500L);
+    }
+
+    public void waitAWhile(Long time) {
         LOG.info("Waiting a bit...");
         try {
-            Thread.sleep(500); //todo: consider moving to a property file. Can be related to specific env. performance
+            Thread.sleep(time); //todo: consider moving time amount to a property file. Can be related to specific env. performance
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -75,11 +75,11 @@ public class PetSteps extends BaseSteps {
     }
 
     public Response findPetByStatus(String... statuses) {
-        RequestSpecification myRequest = super.given()
+        RequestSpecification request = super.given()
                 .when()
                 .basePath(BASE_PATH);
-        Arrays.stream(statuses).forEach(status -> myRequest.queryParam("status", status));
-        return myRequest.log().all()
+        Arrays.stream(statuses).forEach(status -> request.queryParam("status", status));
+        return request.log().all()
                 .get("findByStatus")
                 .then()
                 .log().all()
@@ -87,23 +87,46 @@ public class PetSteps extends BaseSteps {
     }
 
     public Response findPetByTags(List<Tag> tags) {
-        RequestSpecification myRequest = super.given()
+        RequestSpecification request = super.given()
                 .when()
                 .basePath(BASE_PATH);
-        tags.forEach(tag -> myRequest.queryParam("tags", tag.getName()));
-        return myRequest.log().all()
+        tags.forEach(tag -> request.queryParam("tags", tag.getName()));
+        return request.log().all()
                 .get("findByTags")
                 .then()
                 .log().all()
                 .extract().response();
     }
 
-    public Response deletePet(Long petId) {
-        return super.given()
+    public Response deletePet(String apiKey) {
+        RequestSpecification request = super.given()
                 .when()
-                .basePath(BASE_PATH)
+                .basePath(BASE_PATH);
+        if(apiKey != null) {
+            request.header("apiKey", apiKey);
+        }
+        return request
                 .log().all()
-                .delete(String.valueOf(petId))
+                .delete()
+                .then()
+                .log().all()
+                .extract().response();
+    }
+
+    public Response deletePet(String apiKey, Long petId) {
+        return deletePet(apiKey, String.valueOf(petId));
+    }
+
+    public Response deletePet(String apiKey, String petId) {
+        RequestSpecification request = super.given()
+                .when()
+                .basePath(BASE_PATH);
+        if(apiKey != null) {
+            request.header("apiKey", apiKey);
+        }
+        return request
+                .log().all()
+                .delete(petId)
                 .then()
                 .log().all()
                 .extract().response();

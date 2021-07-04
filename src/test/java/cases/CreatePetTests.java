@@ -26,11 +26,11 @@ public class CreatePetTests extends BaseTest {
     @AfterEach
     @Override
     protected void tearDown() {
-        petSteps.deletePet((long) petId);
+        petSteps.deletePet(NULL_API_KEY, (long) petId);
     }
 
     @Test
-    @org.junit.jupiter.api.Tag("smoke")
+    @org.junit.jupiter.api.Tag(SMOKE_TAG)
     void addPetWithOnlyRequiredData_expectSuccess() {
         //GIVEN
         Pet pet = new Pet.Builder()
@@ -46,7 +46,7 @@ public class CreatePetTests extends BaseTest {
     }
 
     @Test
-    @org.junit.jupiter.api.Tag("smoke")
+    @org.junit.jupiter.api.Tag(SMOKE_TAG)
     void addPetWithAllPossibleData_expectSuccess() {
         //GIVEN
         Pet pet = new Pet.Builder()

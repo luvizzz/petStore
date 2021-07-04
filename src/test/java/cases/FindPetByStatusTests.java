@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FindPetByStatusTests extends BaseTest {
     @Test
-    @Tag("smoke")
+    @Tag(SMOKE_TAG)
     void findPetByStatus_expectSuccess() {
         //WHEN
         Response response = petSteps.findPetByStatus(pet.getStatus());
