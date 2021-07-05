@@ -1,10 +1,13 @@
 package steps;
 
+import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.Assertions;
+
 import java.util.logging.Logger;
 
 public abstract class BaseSteps {
@@ -17,6 +20,7 @@ public abstract class BaseSteps {
         waitAWhile(); //there are some performance issues in the response. Waiting before each request allows DB to persist properly.
 
         RequestSpecification spec = new RequestSpecBuilder()
+                .addFilter(new AllureRestAssured())
                 .setBaseUri(ROOT_URI)
                 .setContentType(ContentType.JSON)
                 .build();
@@ -26,6 +30,7 @@ public abstract class BaseSteps {
                 .spec(spec);
     }
 
+    @Step("Asserting that response status code is {0}")
     public void assertResponseCode(int actual, int expected) {
         Assertions.assertThat(actual)
                 .as("Validating response code is {}", expected)
@@ -36,6 +41,7 @@ public abstract class BaseSteps {
         waitAWhile(500L);
     }
 
+    @Step("Waiting a while ({0} ms)")
     public void waitAWhile(Long time) {
         LOG.info(String.format("Waiting a bit (%d ms)...", time));
         try {

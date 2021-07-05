@@ -3,6 +3,7 @@ package cases;
 import domain.Category;
 import domain.Pet;
 import domain.Tag;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,18 +20,21 @@ public class CreatePetTests extends BaseTest {
 
     @BeforeEach
     @Override
+    @Description("Setting up test data")
     protected void setup() {
         this.petId = Utils.randomId();
     }
 
     @AfterEach
     @Override
+    @Description("Tearing down test data")
     protected void tearDown() {
         petSteps.deletePet(NULL_API_KEY, (long) petId);
     }
 
     @Test
     @org.junit.jupiter.api.Tag(SMOKE_TAG)
+    @Description("Test adding pet with minimum required data and expects success")
     void addPetWithOnlyRequiredData_expectSuccess() {
         //GIVEN
         Pet pet = new Pet.Builder()
@@ -47,6 +51,7 @@ public class CreatePetTests extends BaseTest {
 
     @Test
     @org.junit.jupiter.api.Tag(SMOKE_TAG)
+    @Description("Test adding pet with all possible data and expects success")
     void addPetWithAllPossibleData_expectSuccess() {
         //GIVEN
         Pet pet = new Pet.Builder()
@@ -66,6 +71,7 @@ public class CreatePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test adding pet with missing mandatory photoUrl and expects failure")
     void addPetWithMissingRequiredPhotoUrls_expectFailure() {
         //GIVEN
         Pet pet = new Pet.Builder()
@@ -80,6 +86,7 @@ public class CreatePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test adding pet with missing mandatory name and expects failure")
     void addPetWithMissingRequiredName_expectFailure() {
         //GIVEN
         Pet pet = new Pet.Builder()
@@ -94,6 +101,7 @@ public class CreatePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test adding pet with bad input payload and expects failure")
     void addPetWithBadInput_expectMethodNotAllowed() {
         //WHEN
         Response response = petSteps.addPet("\"input\":\"someBadInput\"");

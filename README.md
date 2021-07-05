@@ -11,6 +11,7 @@ In order to execute the complete test suite, please run the following steps:
 - Download this repository content
 - Open a new terminal session and change your directory to '<repository location>/petStore' (basically, the same directory as this readme file)
 - Run 'mvn clean test'
+- In order to generate a test report, run the command 'allure serve <repository location>/petStore/target/allure-results'
 
 ----
 Technologies used:
@@ -20,3 +21,4 @@ Technologies used:
 - Surefire plugin
 - RestAssured
 - Junit 5
+- Allure report

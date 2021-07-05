@@ -2,6 +2,7 @@ package cases;
 
 import domain.Category;
 import domain.Pet;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import steps.PetSteps;
@@ -17,6 +18,7 @@ public abstract class BaseTest {
     static Pet pet;
 
     @BeforeEach
+    @Description("Setting up test data")
     protected void setup() {
         pet = new Pet.Builder()
                 .withId((long) Utils.randomId())
@@ -32,6 +34,7 @@ public abstract class BaseTest {
     }
 
     @AfterEach
+    @Description("Tearing down test data")
     protected void tearDown() {
         petSteps.deletePet(NULL_API_KEY, pet.getId());
     }
