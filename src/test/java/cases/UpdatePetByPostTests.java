@@ -1,6 +1,7 @@
 package cases;
 
 import domain.Pet;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class UpdatePetByPostTests extends BaseTest {
     @Test
     @Tag(SMOKE_TAG)
+    @Description("Test updating multiple data of existing Pet expect success")
     void updatePetNameAndStatus_expectSuccess() {
         //GIVEN
         String updatedName = Utils.randomName();
@@ -40,6 +42,7 @@ public class UpdatePetByPostTests extends BaseTest {
 
     @Test
     @Tag(SMOKE_TAG)
+    @Description("Test updating name of existing Pet expect success")
     void updatePetName_expectSuccess() {
         //GIVEN
         String updatedName = Utils.randomName();
@@ -67,6 +70,7 @@ public class UpdatePetByPostTests extends BaseTest {
 
     @Test
     @Tag(SMOKE_TAG)
+    @Description("Test updating status of existing Pet expect success")
     void updatePetStatus_expectSuccess() {
         //GIVEN
         String updatedStatus = Utils.randomStatus();
@@ -93,6 +97,7 @@ public class UpdatePetByPostTests extends BaseTest {
     }
 
     @Test
+    @Description("Test updating nothing of existing Pet expect success")
     void updateNothing_expectSuccess() {
         //WHEN
         Response response = petSteps.updatePetByPost(pet.getId(), null, null);
@@ -108,6 +113,7 @@ public class UpdatePetByPostTests extends BaseTest {
     }
 
     @Test
+    @Description("Test updating Pet providing wrong id expect not found")
     void updatePetWithWrongId_expectNotFound() {
         //GIVEN
         petSteps.deletePet(null, pet.getId());

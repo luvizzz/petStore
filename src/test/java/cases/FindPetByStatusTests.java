@@ -1,6 +1,7 @@
 package cases;
 
 import domain.Pet;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import java.util.List;
 public class FindPetByStatusTests extends BaseTest {
     @Test
     @Tag(SMOKE_TAG)
+    @Description("Test finding existing Pet by status expect success")
     void findPetByStatus_expectSuccess() {
         //WHEN
         Response response = petSteps.findPetByStatus(pet.getStatus());
@@ -20,6 +22,7 @@ public class FindPetByStatusTests extends BaseTest {
     }
 
     @Test
+    @Description("Test finding existing Pet without providing status expect empty list")
     void findPetByStatusWithoutStatusProvided_expectEmptyList() {
         //WHEN
         Response response = petSteps.findPetByStatus();
@@ -29,6 +32,7 @@ public class FindPetByStatusTests extends BaseTest {
     }
 
     @Test
+    @Description("Test finding existing Pet by providing wrong status expect not found")
     void findPetByStatusWithWrongStatusProvided_expectPetNotFound() {
         //WHEN
         Response response = petSteps.findPetByStatus(pet.getStatus() + "someBadStatus");
@@ -38,7 +42,8 @@ public class FindPetByStatusTests extends BaseTest {
     }
 
     @Test
-    void finMultiplePetsByMultipleStatuses_expectSuccess() {
+    @Description("Test finding multiple Pets by providing multiple statuses expect success")
+    void findMultiplePetsByMultipleStatuses_expectSuccess() {
         //GIVEN
         Pet otherPet = new Pet.Builder()
                 .withId((long) Utils.randomId())
@@ -56,7 +61,8 @@ public class FindPetByStatusTests extends BaseTest {
     }
 
     @Test
-    void finSinglePetByMultipleStatuses_expectSuccess() {
+    @Description("Test finding single Pet by providing multiple statuses expect success")
+    void findSinglePetByMultipleStatuses_expectSuccess() {
         //WHEN
         Response response = petSteps.findPetByStatus(pet.getStatus(), "someOtherStatus");
 

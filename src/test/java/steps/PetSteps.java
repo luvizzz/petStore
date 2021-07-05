@@ -2,6 +2,7 @@ package steps;
 
 import domain.Pet;
 import domain.Tag;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -20,6 +21,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class PetSteps extends BaseSteps {
     final String BASE_PATH = "pet/";
 
+    @Step("Adding a new Pet")
     public Response addPet(Pet body) {
         return super.given()
                 .when()
@@ -32,6 +34,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Adding a new Pet")
     public Response addPet(String body) {
         return super.given()
                 .when()
@@ -44,6 +47,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Updating Pet using PUT")
     public Response updatePetByPut(Pet body) {
         return super.given()
                 .when()
@@ -56,6 +60,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Updating Pet using PUT")
     public Response updatePetByPut(String body) {
         return super.given()
                 .when()
@@ -68,6 +73,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Updating Pet using POST")
     public Response updatePetByPost(Long petId, String name, String status) {
         String body = createUpdatePostBody(name, status);
         return super.given()
@@ -97,6 +103,7 @@ public class PetSteps extends BaseSteps {
         return body;
     }
 
+    @Step("Uploading image for Pet {0}")
     public Response uploadPetImage(Long petId, String metadata, String filePath, String fileType) {
         RequestSpecification request =  super.given()
                 .when()
@@ -121,6 +128,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Getting Pet {0}")
     public Response getPet(Long id) {
         return super.given()
                 .when()
@@ -132,6 +140,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Getting Pet without providing ID")
     public Response getPetWithoutId() {
         return super.given()
                 .when()
@@ -143,6 +152,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Finding Pet by Status")
     public Response findPetByStatus() {
         return super.given()
                 .when()
@@ -154,6 +164,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Finding Pet by Statuses {0}")
     public Response findPetByStatus(String... statuses) {
         RequestSpecification request = super.given()
                 .when()
@@ -166,6 +177,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Finding Pet by Tags")
     public Response findPetByTags(List<Tag> tags) {
         RequestSpecification request = super.given()
                 .when()
@@ -178,6 +190,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Deleting Pet without providing ID")
     public Response deletePet(String apiKey) {
         RequestSpecification request = super.given()
                 .when()
@@ -193,6 +206,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Deleting Pet with ID {0}")
     public Response deletePet(String apiKey, Long petId) {
         return deletePet(apiKey, String.valueOf(petId));
     }
@@ -212,6 +226,7 @@ public class PetSteps extends BaseSteps {
                 .extract().response();
     }
 
+    @Step("Asserting response contains expected Pet")
     public void assertResponseContains(Response response, Pet expected) {
         assertResponseCode(response.statusCode(), SC_OK);
         Pet actual = response.body().as(Pet.class);
@@ -227,6 +242,7 @@ public class PetSteps extends BaseSteps {
         });
     }
 
+    @Step("Asserting response contains list of expected Pets")
     public void assertResponseContainsList(Response response, List<Long> expectedListOfIds) {
         assertResponseCode(response.statusCode(), SC_OK);
         List<Map<String, Object>> actual = response.body().as(List.class);

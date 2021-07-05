@@ -1,5 +1,6 @@
 package cases;
 
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class DeletePetTests extends BaseTest {
     @Test
     @Tag(SMOKE_TAG)
+    @Description("Test deleting pet with null apiKey and valid petId expecting success")
     void deletePetsUsingNullApiKeyAndValidPetId_expectSuccess() {
         //WHEN
         Response response = petSteps.deletePet(null, pet.getId());
@@ -27,6 +29,7 @@ public class DeletePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test deleting pet with null apiKey and null petId expecting not allowed response")
     void deletePetsUsingNullApiKeyAndNullPetId_expectMethodNotAllowed() {
         //WHEN
         Response response = petSteps.deletePet(null);
@@ -42,6 +45,7 @@ public class DeletePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test deleting pet with valid apiKey and valid petId expecting success")
     void deletePetsUsingValidApiKeyAndValidPetId_expectSuccess() {
         //WHEN
         Response response = petSteps.deletePet("someApiKey", pet.getId());
@@ -57,6 +61,7 @@ public class DeletePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test deleting pet with valid apiKey and null petId expecting not allowed response")
     void deletePetsUsingValidApiKeyAndNullPetId_expectMethodNotAllowed() {
         //WHEN
         Response response = petSteps.deletePet("someApiKey");
@@ -72,6 +77,7 @@ public class DeletePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test deleting pet with invalid petId expecting bad request")
     void deletePetsUsingInvalidPetId_expectBadRequest() {
         //WHEN
         Response response = petSteps.deletePet(null, "someInvalidPetId");
@@ -87,6 +93,7 @@ public class DeletePetTests extends BaseTest {
     }
 
     @Test
+    @Description("Test deleting pet which does not exist expecting not found")
     void deleteNonexistantPet_expectNotFound() {
         //GIVEN
         petSteps.deletePet(null, pet.getId());
